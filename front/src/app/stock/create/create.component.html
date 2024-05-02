@@ -1,0 +1,29 @@
+<main>
+  <h1>Ajoute un article</h1>
+  <form [formGroup]="f" (ngSubmit)="submit()">
+    <label>
+      <span>Nom</span>
+      <input type="text" formControlName="name" />
+    </label>
+    <label>
+      <span>Prix</span>
+      <input type="number" formControlName="price" />
+    </label>
+    <label>
+      <span>Quantité</span>
+      <input type="number" formControlName="qty" />
+    </label>
+    <div class="error">
+      <span *ngIf="errorMsg">Erreur : {{ errorMsg }}</span>
+    </div>
+    <div class="buttons">
+      <button class="primary" [disabled]="isAdding">
+        <fa-icon
+          [icon]="isAdding ? faCircleNotch : faPlus"
+          [spin]="isAdding"
+        ></fa-icon>
+        <span>Ajouter</span>
+      </button>
+    </div>
+  </form>
+</main>

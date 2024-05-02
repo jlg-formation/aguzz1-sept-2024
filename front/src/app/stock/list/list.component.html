@@ -1,0 +1,62 @@
+<main>
+  <h1>Liste des articles</h1>
+  <div class="content">
+    <div class="error">
+      <span *ngIf="errorMsg">Erreur: {{ errorMsg }}</span>
+    </div>
+    <nav>
+      <button title="Rafraîchir" (click)="refresh()" [disabled]="isRefreshing">
+        <fa-icon [icon]="faRotateRight" [spin]="isRefreshing"></fa-icon>
+      </button>
+      <a routerLink="create" class="button" title="Ajouter">
+        <fa-icon [icon]="faPlus"></fa-icon>
+      </a>
+      <button
+        title="Supprimer"
+        [hidden]="selectedArticles.size === 0"
+        (click)="remove()"
+        [disabled]="isRemoving"
+      >
+        <fa-icon
+          [icon]="isRemoving ? faCircleNotch : faTrashAlt"
+          [spin]="isRemoving"
+        ></fa-icon>
+      </button>
+    </nav>
+    <table>
+      <thead>
+        <tr>
+          <th class="name">Nom</th>
+          <th class="price">Prix</th>
+          <th class="qty">Quantité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="articleService.articles === undefined; else showArticles">
+          <td
+            colspan="3"
+            *ngIf="articleService.errorMsg === ''; else showError"
+          >
+            Loading...
+          </td>
+          <ng-template #showError>
+            <td colspan="3">
+              <strong> Erreur: {{ articleService.errorMsg }} </strong>
+            </td>
+          </ng-template>
+        </tr>
+        <ng-template #showArticles>
+          <tr
+            *ngFor="let a of articleService.articles"
+            [class.selected]="selectedArticles.has(a)"
+            (click)="select(a)"
+          >
+            <td class="name">{{ a.name }}</td>
+            <td class="price">{{ a.price }} €</td>
+            <td class="qty">{{ a.qty }}</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </table>
+  </div>
+</main>
