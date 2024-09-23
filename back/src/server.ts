@@ -3,7 +3,7 @@ import serveIndex from "serve-index";
 import { api } from "./api";
 
 const app = express();
-const wwwDir = ".";
+const wwwDir = "../front/dist/front/browser";
 const port = process.env.AGS_PORT || 3000;
 
 app.use("/api", api);
