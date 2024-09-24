@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import {
   FormArray,
+  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -30,20 +31,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [ReactiveFormsModule, FontAwesomeModule],
 })
 export default class CreateComponent implements OnInit {
+  afb = new FormBuilder();
   errorMsg = signal('');
-  f = new FormGroup({
-    name: new FormControl('Truc', {
-      validators: [Validators.required],
-      nonNullable: true,
-    }),
-    price: new FormControl(0, {
-      validators: [Validators.required],
-      nonNullable: true,
-    }),
-    qty: new FormControl(1, {
-      validators: [Validators.required],
-      nonNullable: true,
-    }),
+  f = this.afb.nonNullable.group({
+    name: ['Truc', [Validators.required]],
+    price: [0, [Validators.required]],
+    qty: [1, [Validators.required]],
   });
   faCircleNotch = faCircleNotch;
   faPlus = faPlus;
