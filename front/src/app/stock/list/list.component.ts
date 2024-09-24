@@ -5,17 +5,9 @@ import {
   faRotateRight,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { Article } from '../../interfaces/article';
 import { ArticleService } from '../../services/article.service';
-import {
-  catchError,
-  finalize,
-  lastValueFrom,
-  Observable,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
 
 @Component({
   selector: 'app-list',
