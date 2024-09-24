@@ -21,7 +21,7 @@
       <button
         title="Supprimer"
         [hidden]="selectedArticles.size === 0"
-        (click)="remove()"
+        (click)="remove().subscribe()"
         [disabled]="isRemoving"
       >
         <fa-icon
