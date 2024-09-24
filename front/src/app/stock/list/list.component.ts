@@ -7,7 +7,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Article } from '../../interfaces/article';
 import { ArticleService } from '../../services/article.service';
-import { lastValueFrom } from 'rxjs';
+import {
+  catchError,
+  finalize,
+  lastValueFrom,
+  Observable,
+  of,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -32,16 +39,21 @@ export class ListComponent implements OnInit {
     }
   }
 
-  async refresh() {
-    try {
-      this.errorMsg = '';
-      this.isRefreshing = true;
-      await lastValueFrom(this.articleService.load());
-    } catch (err) {
-      console.log('err: ', err);
-    } finally {
-      this.isRefreshing = false;
-    }
+  refresh(): Observable<void> {
+    return of(undefined).pipe(
+      switchMap(() => {
+        this.errorMsg = '';
+        this.isRefreshing = true;
+        return this.articleService.load();
+      }),
+      catchError((err) => {
+        console.log('err: ', err);
+        return of(undefined);
+      }),
+      finalize(() => {
+        this.isRefreshing = false;
+      })
+    );
   }
 
   async remove() {

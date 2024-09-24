@@ -5,7 +5,11 @@
       <span *ngIf="errorMsg">Erreur: {{ errorMsg }}</span>
     </div>
     <nav>
-      <button title="Rafraîchir" (click)="refresh()" [disabled]="isRefreshing">
+      <button
+        title="Rafraîchir"
+        (click)="refresh().subscribe()"
+        [disabled]="isRefreshing"
+      >
         <fa-icon
           [icon]="faRotateRight"
           [animation]="isRefreshing ? 'spin' : undefined"
