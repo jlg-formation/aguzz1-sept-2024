@@ -3,19 +3,17 @@
   <div class="content">
     <div class="error">
       @if (errorMsg) {
-      <span>Erreur: {{ errorMsg }}</span>
+        <span>Erreur: {{ errorMsg }}</span>
       }
     </div>
     <nav>
       <button
         title="Rafraîchir"
         (click)="refresh().subscribe()"
-        [disabled]="isRefreshing"
-      >
+        [disabled]="isRefreshing">
         <fa-icon
           [icon]="faRotateRight"
-          [animation]="isRefreshing ? 'spin' : undefined"
-        ></fa-icon>
+          [animation]="isRefreshing ? 'spin' : undefined"></fa-icon>
       </button>
       <a routerLink="create" class="button" title="Ajouter">
         <fa-icon [icon]="faPlus"></fa-icon>
@@ -24,12 +22,10 @@
         title="Supprimer"
         [hidden]="selectedArticles.size === 0"
         (click)="remove().subscribe()"
-        [disabled]="isRemoving"
-      >
+        [disabled]="isRemoving">
         <fa-icon
           [icon]="isRemoving ? faCircleNotch : faTrashAlt"
-          [animation]="isRemoving ? 'spin' : undefined"
-        ></fa-icon>
+          [animation]="isRemoving ? 'spin' : undefined"></fa-icon>
       </button>
     </nav>
     <table>
@@ -42,22 +38,26 @@
       </thead>
       <tbody>
         @if ((articleService.articles$ | async) === undefined) {
-        <tr>
-          @if ((articleService.errorMsg$ | async) === '') {
-          <td colspan="3">Loading...</td>
-          } @else {
-          <td colspan="3">
-            <strong> Erreur: {{ articleService.errorMsg$ | async }} </strong>
-          </td>
+          <tr>
+            @if ((articleService.errorMsg$ | async) === '') {
+              <td colspan="3">Loading...</td>
+            } @else {
+              <td colspan="3">
+                <strong>
+                  Erreur: {{ articleService.errorMsg$ | async }}
+                </strong>
+              </td>
+            }
+          </tr>
+        } @else {
+          @for (a of articleService.articles$ | async; track a.id) {
+            <tr [class.selected]="selectedArticles.has(a)" (click)="select(a)">
+              <td class="name">{{ a.name }}</td>
+              <td class="price">{{ a.price }} €</td>
+              <td class="qty">{{ a.qty }}</td>
+            </tr>
           }
-        </tr>
-        } @else { @for (a of (articleService.articles$ | async); track a.id) {
-        <tr [class.selected]="selectedArticles.has(a)" (click)="select(a)">
-          <td class="name">{{ a.name }}</td>
-          <td class="price">{{ a.price }} €</td>
-          <td class="qty">{{ a.qty }}</td>
-        </tr>
-        } }
+        }
       </tbody>
     </table>
   </div>
