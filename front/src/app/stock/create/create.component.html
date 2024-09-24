@@ -14,7 +14,9 @@
       <input type="number" formControlName="qty" />
     </label>
     <div class="error">
-      <span *ngIf="errorMsg">Erreur : {{ errorMsg }}</span>
+      @if (errorMsg) {
+      <span>Erreur : {{ errorMsg }}</span>
+      }
     </div>
     <div class="buttons">
       <button class="primary" [disabled]="isAdding">
