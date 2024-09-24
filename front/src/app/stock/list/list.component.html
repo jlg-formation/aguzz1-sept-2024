@@ -56,6 +56,10 @@
               <td class="price">{{ a.price }} €</td>
               <td class="qty">{{ a.qty }}</td>
             </tr>
+          } @empty {
+            <tr>
+              <td colspan="3">Pas d'articles.</td>
+            </tr>
           }
         }
       </tbody>
