@@ -47,13 +47,13 @@
         >
           <td
             colspan="3"
-            *ngIf="articleService.errorMsg === ''; else showError"
+            *ngIf="(articleService.errorMsg$ | async) === ''; else showError"
           >
             Loading...
           </td>
           <ng-template #showError>
             <td colspan="3">
-              <strong> Erreur: {{ articleService.errorMsg }} </strong>
+              <strong> Erreur: {{ articleService.errorMsg$ | async }} </strong>
             </td>
           </ng-template>
         </tr>

@@ -18,7 +18,7 @@ const url = '/api/articles';
 })
 export class ArticleService {
   articles$ = new BehaviorSubject<Article[] | undefined>(undefined);
-  errorMsg = '';
+  errorMsg$ = new BehaviorSubject('');
 
   constructor(private http: HttpClient) {}
 
@@ -35,7 +35,7 @@ export class ArticleService {
   load(): Observable<void> {
     return of(undefined).pipe(
       switchMap(() => {
-        this.errorMsg = '';
+        this.errorMsg$.next('');
         return this.http.get<Article[]>(url);
       }),
       delay(1000),
@@ -44,7 +44,7 @@ export class ArticleService {
       }),
       catchError((err) => {
         console.log('err: ', err);
-        this.errorMsg = 'Technical Error';
+        this.errorMsg$.next('Technical Error');
         return of(undefined);
       })
     );
