@@ -1,5 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -14,22 +19,21 @@ import {
   tap,
 } from 'rxjs';
 import { ArticleService } from '../../services/article.service';
+import { blackListAsyncValidator } from '../../validators/blackList.validator';
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, FontAwesomeModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule, CommonModule],
 })
 export default class CreateComponent implements OnInit {
   afb = new FormBuilder();
   errorMsg = signal('');
-  f = this.afb.nonNullable.group({
-    name: ['Truc', [Validators.required, Validators.maxLength(10)], []],
-    price: [0, [Validators.required]],
-    qty: [1, [Validators.required]],
-  });
+  f: FormGroup;
   faCircleNotch = faCircleNotch;
   faPlus = faPlus;
   isAdding = false;
@@ -50,8 +54,19 @@ export default class CreateComponent implements OnInit {
   constructor(
     private articleService: ArticleService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private httpClient: HttpClient
+  ) {
+    this.f = this.afb.nonNullable.group({
+      name: [
+        'Truc',
+        [Validators.required, Validators.maxLength(10)],
+        [blackListAsyncValidator(this.httpClient)],
+      ],
+      price: [0, [Validators.required]],
+      qty: [1, [Validators.required]],
+    });
+  }
 
   ngOnInit(): void {}
 
