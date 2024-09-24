@@ -4,6 +4,9 @@
     <label>
       <span>Nom</span>
       <input type="text" formControlName="name" />
+      <div class="error">
+        {{ nameErrorMsg() }}
+      </div>
     </label>
     <label>
       <span>Prix</span>

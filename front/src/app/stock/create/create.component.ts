@@ -1,13 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
   catchError,
@@ -19,9 +13,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { NewArticle } from '../../interfaces/article';
 import { ArticleService } from '../../services/article.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-create',
@@ -34,13 +26,26 @@ export default class CreateComponent implements OnInit {
   afb = new FormBuilder();
   errorMsg = signal('');
   f = this.afb.nonNullable.group({
-    name: ['Truc', [Validators.required]],
+    name: ['Truc', [Validators.required, Validators.maxLength(10)], []],
     price: [0, [Validators.required]],
     qty: [1, [Validators.required]],
   });
   faCircleNotch = faCircleNotch;
   faPlus = faPlus;
   isAdding = false;
+
+  nameErrorMsg = () => {
+    if (this.f.controls['name'].touched === false) {
+      return '';
+    }
+    if (this.f.controls['name'].errors?.['required']) {
+      return 'Champ obligatoire';
+    }
+    if (this.f.controls['name'].errors?.['maxlength']) {
+      return 'Champ trop long';
+    }
+    return '';
+  };
 
   constructor(
     private articleService: ArticleService,
