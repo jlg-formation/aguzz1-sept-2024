@@ -1,5 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -31,9 +32,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export default class CreateComponent implements OnInit {
   errorMsg = signal('');
   f = new FormGroup({
-    name: new FormControl('Truc', [Validators.required]),
-    price: new FormControl(0, [Validators.required]),
-    qty: new FormControl(1, [Validators.required]),
+    name: new FormControl('Truc', {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    price: new FormControl(0, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    qty: new FormControl(1, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
   });
   faCircleNotch = faCircleNotch;
   faPlus = faPlus;
@@ -53,7 +63,7 @@ export default class CreateComponent implements OnInit {
         this.isAdding = true;
       }),
       delay(1000),
-      switchMap(() => this.articleService.add(this.f.value as NewArticle)),
+      switchMap(() => this.articleService.add(this.f.getRawValue())),
       switchMap(() => this.articleService.load()),
       switchMap(() => this.router.navigate(['..'], { relativeTo: this.route })),
       map(() => {}),
