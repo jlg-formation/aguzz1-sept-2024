@@ -1,5 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -14,13 +19,16 @@ import {
 } from 'rxjs';
 import { NewArticle } from '../../interfaces/article';
 import { ArticleService } from '../../services/article.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FontAwesomeModule],
 })
-export class CreateComponent implements OnInit {
+export default class CreateComponent implements OnInit {
   errorMsg = signal('');
   f = new FormGroup({
     name: new FormControl('Truc', [Validators.required]),

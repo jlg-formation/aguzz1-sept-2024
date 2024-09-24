@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   standalone: true,
   imports: [AsyncPipe],
 })
-export class LegalComponent implements OnInit {
+export default class LegalComponent implements OnInit {
   chrono = 0;
 
   constructor() {
