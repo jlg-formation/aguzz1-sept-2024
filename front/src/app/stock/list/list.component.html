@@ -39,7 +39,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="articleService.articles === undefined; else showArticles">
+        <tr
+          *ngIf="
+            (articleService.articles$ | async) === undefined;
+            else showArticles
+          "
+        >
           <td
             colspan="3"
             *ngIf="articleService.errorMsg === ''; else showError"
@@ -54,7 +59,7 @@
         </tr>
         <ng-template #showArticles>
           <tr
-            *ngFor="let a of articleService.articles"
+            *ngFor="let a of articleService.articles$ | async"
             [class.selected]="selectedArticles.has(a)"
             (click)="select(a)"
           >

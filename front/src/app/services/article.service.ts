@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Article, NewArticle } from '../interfaces/article';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import {
-  delay,
-  lastValueFrom,
+  BehaviorSubject,
   catchError,
-  switchMap,
-  timer,
+  delay,
+  map,
   Observable,
   of,
-  map,
+  switchMap,
 } from 'rxjs';
+import { Article, NewArticle } from '../interfaces/article';
 
 const url = '/api/articles';
 
@@ -18,7 +17,7 @@ const url = '/api/articles';
   providedIn: 'root',
 })
 export class ArticleService {
-  articles: Article[] | undefined;
+  articles$ = new BehaviorSubject<Article[] | undefined>(undefined);
   errorMsg = '';
 
   constructor(private http: HttpClient) {}
@@ -41,7 +40,7 @@ export class ArticleService {
       }),
       delay(1000),
       map((articles) => {
-        this.articles = articles;
+        this.articles$.next(articles);
       }),
       catchError((err) => {
         console.log('err: ', err);
