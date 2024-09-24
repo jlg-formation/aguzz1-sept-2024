@@ -1,6 +1,8 @@
 <main>
   <h1>Liste des articles</h1>
+
   <div class="content">
+    <p>Total des articles: {{ totalArticles() }}</p>
     <div class="error">
       @if (errorMsg) {
         <span>Erreur: {{ errorMsg }}</span>
@@ -39,13 +41,11 @@
       <tbody>
         @if (articleService.articles() === undefined) {
           <tr>
-            @if ((articleService.errorMsg$ | async) === '') {
+            @if (articleService.errorMsg() === '') {
               <td colspan="3">Loading...</td>
             } @else {
               <td colspan="3">
-                <strong>
-                  Erreur: {{ articleService.errorMsg$ | async }}
-                </strong>
+                <strong> Erreur: {{ articleService.errorMsg() }} </strong>
               </td>
             }
           </tr>

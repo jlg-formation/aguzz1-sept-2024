@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import {
   faCircleNotch,
   faPlus,
@@ -24,10 +24,14 @@ export class ListComponent implements OnInit {
   isRemoving = false;
   errorMsg = '';
 
+  totalArticles = computed(() => {
+    return this.articleService.articles()?.length ?? 0;
+  });
+
   constructor(public articleService: ArticleService) {}
 
   ngOnInit(): void {
-    if (this.articleService.articles$.getValue() === undefined) {
+    if (this.articleService.articles() === undefined) {
       this.articleService.load().subscribe();
     }
   }
@@ -39,7 +43,7 @@ export class ListComponent implements OnInit {
         this.isRefreshing = true;
         return this.articleService.load();
       }),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         return of(undefined);
       }),
@@ -54,14 +58,14 @@ export class ListComponent implements OnInit {
       switchMap(() => {
         this.errorMsg = '';
         this.isRemoving = true;
-        const ids = [...this.selectedArticles].map((a) => a.id);
+        const ids = [...this.selectedArticles].map(a => a.id);
         return this.articleService.remove(ids);
       }),
       switchMap(() => this.articleService.load()),
       tap(() => {
         this.selectedArticles.clear();
       }),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         this.errorMsg = 'Cannot suppress';
         return of(undefined);
