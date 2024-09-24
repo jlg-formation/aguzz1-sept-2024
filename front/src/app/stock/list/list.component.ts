@@ -34,6 +34,10 @@ export default class ListComponent implements OnInit {
 
   constructor(public articleService: ArticleService) {}
 
+  setErrorMsg(str: string) {
+    this.errorMsg = str;
+  }
+
   ngOnInit(): void {
     if (this.articleService.articles() === undefined) {
       this.articleService.load().subscribe();
@@ -67,8 +71,7 @@ export default class ListComponent implements OnInit {
       }),
       catchError(err => {
         console.log('err: ', err);
-        this.errorMsg = 'Cannot suppress';
-        return of(undefined);
+        throw new Error('Cannot suppress');
       })
     );
   }

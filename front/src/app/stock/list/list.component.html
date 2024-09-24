@@ -12,7 +12,9 @@
       <app-async-button
         [label]="'Rafraîchir'"
         [action]="refresh()"
-        [icon]="faRotateRight"></app-async-button>
+        [icon]="faRotateRight"
+        (whenStartAction)="setErrorMsg('')"
+        (whenError)="setErrorMsg($event)"></app-async-button>
       <a routerLink="create" class="button" title="Ajouter">
         <fa-icon [icon]="faPlus"></fa-icon>
       </a>
@@ -20,7 +22,9 @@
         [hidden]="selectedArticles.size === 0"
         label="Supprimer"
         [action]="remove()"
-        [icon]="faTrashAlt"></app-async-button>
+        [icon]="faTrashAlt"
+        (whenStartAction)="setErrorMsg('')"
+        (whenError)="setErrorMsg($event)"></app-async-button>
     </nav>
     <table>
       <thead>
