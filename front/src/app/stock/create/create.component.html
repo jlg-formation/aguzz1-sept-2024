@@ -14,16 +14,15 @@
       <input type="number" formControlName="qty" />
     </label>
     <div class="error">
-      @if (errorMsg) {
-      <span>Erreur : {{ errorMsg }}</span>
+      @if (errorMsg()) {
+        <span>Erreur : {{ errorMsg() }}</span>
       }
     </div>
     <div class="buttons">
       <button class="primary" [disabled]="isAdding">
         <fa-icon
           [icon]="isAdding ? faCircleNotch : faPlus"
-          [animation]="isAdding ? 'spin' : undefined"
-        ></fa-icon>
+          [animation]="isAdding ? 'spin' : undefined"></fa-icon>
         <span>Ajouter</span>
       </button>
     </div>

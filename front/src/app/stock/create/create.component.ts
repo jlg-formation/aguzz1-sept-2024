@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faCircleNotch, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +21,7 @@ import { ArticleService } from '../../services/article.service';
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent implements OnInit {
-  errorMsg = '';
+  errorMsg = signal('');
   f = new FormGroup({
     name: new FormControl('Truc', [Validators.required]),
     price: new FormControl(0, [Validators.required]),
@@ -49,10 +49,10 @@ export class CreateComponent implements OnInit {
       switchMap(() => this.articleService.load()),
       switchMap(() => this.router.navigate(['..'], { relativeTo: this.route })),
       map(() => {}),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         if (err instanceof Error) {
-          this.errorMsg = err.message;
+          this.errorMsg.set(err.message);
         }
         return of(undefined);
       }),
