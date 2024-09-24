@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -20,15 +21,13 @@ import {
 } from 'rxjs';
 import { ArticleService } from '../../services/article.service';
 import { blackListAsyncValidator } from '../../validators/blackList.validator';
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, FontAwesomeModule, CommonModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule],
 })
 export default class CreateComponent implements OnInit {
   afb = new FormBuilder();
