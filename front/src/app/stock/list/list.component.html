@@ -2,7 +2,9 @@
   <h1>Liste des articles</h1>
   <div class="content">
     <div class="error">
-      <span *ngIf="errorMsg">Erreur: {{ errorMsg }}</span>
+      @if (errorMsg) {
+      <span>Erreur: {{ errorMsg }}</span>
+      }
     </div>
     <nav>
       <button
@@ -39,35 +41,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngIf="
-            (articleService.articles$ | async) === undefined;
-            else showArticles
-          "
-        >
-          <td
-            colspan="3"
-            *ngIf="(articleService.errorMsg$ | async) === ''; else showError"
-          >
-            Loading...
+        @if ((articleService.articles$ | async) === undefined) {
+        <tr>
+          @if ((articleService.errorMsg$ | async) === '') {
+          <td colspan="3">Loading...</td>
+          } @else {
+          <td colspan="3">
+            <strong> Erreur: {{ articleService.errorMsg$ | async }} </strong>
           </td>
-          <ng-template #showError>
-            <td colspan="3">
-              <strong> Erreur: {{ articleService.errorMsg$ | async }} </strong>
-            </td>
-          </ng-template>
+          }
         </tr>
-        <ng-template #showArticles>
-          <tr
-            *ngFor="let a of articleService.articles$ | async"
-            [class.selected]="selectedArticles.has(a)"
-            (click)="select(a)"
-          >
-            <td class="name">{{ a.name }}</td>
-            <td class="price">{{ a.price }} €</td>
-            <td class="qty">{{ a.qty }}</td>
-          </tr>
-        </ng-template>
+        } @else { @for (a of (articleService.articles$ | async); track a.id) {
+        <tr [class.selected]="selectedArticles.has(a)" (click)="select(a)">
+          <td class="name">{{ a.name }}</td>
+          <td class="price">{{ a.price }} €</td>
+          <td class="qty">{{ a.qty }}</td>
+        </tr>
+        } }
       </tbody>
     </table>
   </div>
