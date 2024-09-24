@@ -4,7 +4,11 @@ import { LegalComponent } from './routes/legal/legal.component';
 import { StockModule } from './stock/stock.module';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'legal', component: LegalComponent },
+  { path: '', component: HomeComponent, title: 'Gestion Stock : Accueil' },
+  {
+    path: 'legal',
+    component: LegalComponent,
+    title: 'Gestion Stock : Mentions Légales',
+  },
   { path: 'stock', loadChildren: () => StockModule },
 ];

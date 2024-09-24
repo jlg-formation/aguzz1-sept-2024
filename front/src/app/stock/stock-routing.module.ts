@@ -4,8 +4,16 @@ import { CreateComponent } from './create/create.component';
 import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: '', component: ListComponent },
-  { path: 'create', component: CreateComponent },
+  {
+    path: '',
+    component: ListComponent,
+    title: "Gestion Stock : Liste d'articles",
+  },
+  {
+    path: 'create',
+    component: CreateComponent,
+    title: "Gestion Stock : Ajout d'un article",
+  },
 ];
 
 @NgModule({
