@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { interval, Subscription, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -13,12 +13,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export default class LegalComponent implements OnInit {
   chrono = 0;
 
-  constructor() {
+  constructor(private readonly cdref: ChangeDetectorRef) {
     interval(1000)
       .pipe(
         tap(x => {
           console.log('x: ', x);
           this.chrono = x;
+          this.cdref.markForCheck();
         }),
         takeUntilDestroyed()
       )
