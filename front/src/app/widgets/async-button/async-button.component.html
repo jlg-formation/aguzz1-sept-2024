@@ -1,0 +1,5 @@
+<button [title]="label" (click)="doAction().subscribe()" [disabled]="isDoing">
+  <fa-icon
+    [icon]="isDoing ? faCircleNotch : icon"
+    [animation]="isDoing ? 'spin' : undefined"></fa-icon>
+</button>

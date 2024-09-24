@@ -9,26 +9,18 @@
       }
     </div>
     <nav>
-      <button
-        title="Rafraîchir"
-        (click)="refresh().subscribe()"
-        [disabled]="isRefreshing">
-        <fa-icon
-          [icon]="faRotateRight"
-          [animation]="isRefreshing ? 'spin' : undefined"></fa-icon>
-      </button>
+      <app-async-button
+        [label]="'Rafraîchir'"
+        [action]="refresh()"
+        [icon]="faRotateRight"></app-async-button>
       <a routerLink="create" class="button" title="Ajouter">
         <fa-icon [icon]="faPlus"></fa-icon>
       </a>
-      <button
-        title="Supprimer"
+      <app-async-button
         [hidden]="selectedArticles.size === 0"
-        (click)="remove().subscribe()"
-        [disabled]="isRemoving">
-        <fa-icon
-          [icon]="isRemoving ? faCircleNotch : faTrashAlt"
-          [animation]="isRemoving ? 'spin' : undefined"></fa-icon>
-      </button>
+        label="Supprimer"
+        [action]="remove()"
+        [icon]="faTrashAlt"></app-async-button>
     </nav>
     <table>
       <thead>

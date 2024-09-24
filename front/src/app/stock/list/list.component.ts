@@ -10,22 +10,22 @@ import { Article } from '../../interfaces/article';
 import { ArticleService } from '../../services/article.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterLink } from '@angular/router';
+import { AsyncButtonComponent } from '../../widgets/async-button/async-button.component';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   standalone: true,
-  imports: [FontAwesomeModule, RouterLink],
+  imports: [FontAwesomeModule, RouterLink, AsyncButtonComponent],
 })
 export default class ListComponent implements OnInit {
   faCircleNotch = faCircleNotch;
   faPlus = faPlus;
   faRotateRight = faRotateRight;
   faTrashAlt = faTrashAlt;
-  isRefreshing = false;
+
   selectedArticles = new Set<Article>();
-  isRemoving = false;
   errorMsg = '';
 
   totalArticles = computed(() => {
@@ -44,15 +44,11 @@ export default class ListComponent implements OnInit {
     return of(undefined).pipe(
       switchMap(() => {
         this.errorMsg = '';
-        this.isRefreshing = true;
         return this.articleService.load();
       }),
       catchError(err => {
         console.log('err: ', err);
         return of(undefined);
-      }),
-      finalize(() => {
-        this.isRefreshing = false;
       })
     );
   }
@@ -61,7 +57,7 @@ export default class ListComponent implements OnInit {
     return of(undefined).pipe(
       switchMap(() => {
         this.errorMsg = '';
-        this.isRemoving = true;
+
         const ids = [...this.selectedArticles].map(a => a.id);
         return this.articleService.remove(ids);
       }),
@@ -73,9 +69,6 @@ export default class ListComponent implements OnInit {
         console.log('err: ', err);
         this.errorMsg = 'Cannot suppress';
         return of(undefined);
-      }),
-      finalize(() => {
-        this.isRemoving = false;
       })
     );
   }
