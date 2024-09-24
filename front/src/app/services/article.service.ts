@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
   catchError,
@@ -18,6 +19,7 @@ const url = '/api/articles';
 })
 export class ArticleService {
   articles$ = new BehaviorSubject<Article[] | undefined>(undefined);
+  articles = toSignal(this.articles$);
   errorMsg$ = new BehaviorSubject('');
 
   constructor(private http: HttpClient) {}
@@ -25,7 +27,7 @@ export class ArticleService {
   add(newArticle: NewArticle): Observable<void> {
     return of(undefined).pipe(
       switchMap(() => this.http.post<void>(url, newArticle)),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         throw new Error('Technical error');
       })
@@ -39,10 +41,10 @@ export class ArticleService {
         return this.http.get<Article[]>(url);
       }),
       delay(1000),
-      map((articles) => {
+      map(articles => {
         this.articles$.next(articles);
       }),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         this.errorMsg$.next('Technical Error');
         return of(undefined);
@@ -58,7 +60,7 @@ export class ArticleService {
           body: ids,
         })
       ),
-      catchError((err) => {
+      catchError(err => {
         console.log('err: ', err);
         throw new Error('Technical error');
       })
